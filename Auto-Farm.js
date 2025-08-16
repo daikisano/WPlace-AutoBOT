@@ -45,9 +45,13 @@
     y: Math.floor(Math.random() * CONFIG.PIXELS_PER_LINE)
   });
 
+  // ✅ FIXED: now uses absolute coords in URL
   const paintPixel = async (x, y) => {
+    const absX = CONFIG.START_X + x;
+    const absY = CONFIG.START_Y + y;
     const randomColor = Math.floor(Math.random() * 31) + 1;
-    return await fetchAPI(`https://backend.wplace.live/s0/pixel/${CONFIG.START_X}/${CONFIG.START_Y}`, {
+
+    return await fetchAPI(`https://backend.wplace.live/s0/pixel/${absX}/${absY}`, {
       method: 'POST',
       headers: { 'Content-Type': 'text/plain;charset=UTF-8' },
       body: JSON.stringify({ coords: [x, y], colors: [randomColor] })
@@ -370,9 +374,7 @@
     
     const toggleBtn = panel.querySelector('#toggleBtn');
     const minimizeBtn = panel.querySelector('#minimizeBtn');
-    const statusText = panel.querySelector('#statusText');
     const content = panel.querySelector('.wplace-content');
-    const statsArea = panel.querySelector('#statsArea');
     
     toggleBtn.addEventListener('click', () => {
       state.running = !state.running;
